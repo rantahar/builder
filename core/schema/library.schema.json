@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildscaffold.dev/schema/library.schema.json",
+  "title": "BuildScaffold Piece Library",
+  "description": "Defines a catalog of pieces with dimensions and attachment rules. Attachment grids are computed from piece dimensions and attachment type parameters (margin + spacing), not enumerated per piece.",
+  "type": "object",
+  "required": ["id", "name", "unit", "attachment_types", "pieces"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Library identifier, e.g. lego_basic, wood_basic"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable library name"
+    },
+    "unit": {
+      "type": "string",
+      "enum": ["mm", "ldu"],
+      "description": "Unit for all dimensions in this library. LDU = LDraw Unit (0.4mm, 20 LDU per stud pitch)."
+    },
+    "attachment_types": {
+      "type": "object",
+      "description": "Attachment rules shared across pieces. Each key is an attachment type name referenced by piece faces. The grid of valid attachment positions on a face is computed: starting at 'margin' from each edge, repeating every 'spacing' units, up to (face_size - margin).",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["margin", "spacing", "compatible_with"],
+        "additionalProperties": true,
+        "properties": {
+          "margin": {
+            "type": "number",
+            "description": "Minimum distance from face edge to first attachment point"
+          },
+          "spacing": {
+            "type": "number",
+            "description": "Distance between adjacent attachment points"
+          },
+          "compatible_with": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "List of attachment type names this type can connect to. A stud connects to an anti_stud; a screw_entry connects to a screw_receiver."
+          },
+          "grid_locked": {
+            "type": "boolean",
+            "default": false,
+            "description": "If true, pieces must align to the attachment grid and all overlapping points connect automatically (e.g. Lego studs). This implies only rotations that preserve grid alignment are valid (90-degree multiples for rectangular grids). If false, attachment points are available positions that can be selectively used, and arbitrary rotations are allowed as long as there is physical space (e.g. wood screws)."
+          }
+        }
+      }
+    },
+    "pieces": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/piece" }
+    }
+  },
+  "$defs": {
+    "face_normal": {
+      "type": "string",
+      "enum": ["+x", "-x", "+y", "-y", "+z", "-z"],
+      "description": "Axis-aligned face direction. Convention: +y is up."
+    },
+    "piece": {
+      "type": "object",
+      "required": ["id", "name", "dimensions", "faces"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique piece identifier within this library"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable piece name"
+        },
+        "category": {
+          "type": "string",
+          "description": "Piece category, e.g. brick, plate, baseplate, lumber, plank, bracket"
+        },
+        "dimensions": {
+          "type": "object",
+          "required": ["width", "height", "length"],
+          "additionalProperties": false,
+          "properties": {
+            "width": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Size along x-axis, in library units"
+            },
+            "height": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Size along y-axis (vertical), in library units"
+            },
+            "length": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Size along z-axis, in library units"
+            }
+          }
+        },
+        "faces": {
+          "type": "object",
+          "description": "Maps face normals to their attachment capability. Omitted faces have no attachment points. The number of attachment points on a face is computed from the face dimensions and the referenced attachment_type's margin/spacing.",
+          "propertyNames": { "$ref": "#/$defs/face_normal" },
+          "additionalProperties": {
+            "type": "object",
+            "required": ["attachments"],
+            "additionalProperties": true,
+            "properties": {
+              "attachments": {
+                "type": "array",
+                "items": { "type": "string" },
+                "minItems": 1,
+                "description": "List of attachment type keys this face supports. A post face might be both screw_entry and screw_receiver."
+              }
+            }
+          }
+        },
+        "variable_length": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, the length dimension is a default that can be overridden per placement (for cut-to-size materials like wood)"
+        },
+        "ldraw_id": {
+          "type": "string",
+          "description": "LDraw part file name, e.g. 3001.dat"
+        },
+        "colors": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Available colors for this piece"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,381 @@
+{
+  "id": "lego_basic",
+  "name": "Lego Basic Bricks",
+  "unit": "ldu",
+  "attachment_types": {
+    "stud": {
+      "margin": 10,
+      "spacing": 20,
+      "compatible_with": ["anti_stud"],
+      "grid_locked": true
+    },
+    "anti_stud": {
+      "margin": 10,
+      "spacing": 20,
+      "compatible_with": ["stud"],
+      "grid_locked": true
+    }
+  },
+  "pieces": [
+    {
+      "id": "brick_1x1",
+      "name": "Brick 1x1",
+      "category": "brick",
+      "dimensions": {
+        "width": 20,
+        "height": 24,
+        "length": 20
+      },
+      "ldraw_id": "3005.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "brick_1x2",
+      "name": "Brick 1x2",
+      "category": "brick",
+      "dimensions": {
+        "width": 40,
+        "height": 24,
+        "length": 20
+      },
+      "ldraw_id": "3004.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "brick_1x3",
+      "name": "Brick 1x3",
+      "category": "brick",
+      "dimensions": {
+        "width": 60,
+        "height": 24,
+        "length": 20
+      },
+      "ldraw_id": "3622.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "brick_1x4",
+      "name": "Brick 1x4",
+      "category": "brick",
+      "dimensions": {
+        "width": 80,
+        "height": 24,
+        "length": 20
+      },
+      "ldraw_id": "3010.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "brick_1x6",
+      "name": "Brick 1x6",
+      "category": "brick",
+      "dimensions": {
+        "width": 120,
+        "height": 24,
+        "length": 20
+      },
+      "ldraw_id": "3009.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "brick_1x8",
+      "name": "Brick 1x8",
+      "category": "brick",
+      "dimensions": {
+        "width": 160,
+        "height": 24,
+        "length": 20
+      },
+      "ldraw_id": "3008.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "brick_2x2",
+      "name": "Brick 2x2",
+      "category": "brick",
+      "dimensions": {
+        "width": 40,
+        "height": 24,
+        "length": 40
+      },
+      "ldraw_id": "3003.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "brick_2x3",
+      "name": "Brick 2x3",
+      "category": "brick",
+      "dimensions": {
+        "width": 60,
+        "height": 24,
+        "length": 40
+      },
+      "ldraw_id": "3002.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "brick_2x4",
+      "name": "Brick 2x4",
+      "category": "brick",
+      "dimensions": {
+        "width": 80,
+        "height": 24,
+        "length": 40
+      },
+      "ldraw_id": "3001.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "brick_2x6",
+      "name": "Brick 2x6",
+      "category": "brick",
+      "dimensions": {
+        "width": 120,
+        "height": 24,
+        "length": 40
+      },
+      "ldraw_id": "2456.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "brick_2x8",
+      "name": "Brick 2x8",
+      "category": "brick",
+      "dimensions": {
+        "width": 160,
+        "height": 24,
+        "length": 40
+      },
+      "ldraw_id": "3007.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "plate_1x1",
+      "name": "Plate 1x1",
+      "category": "plate",
+      "dimensions": {
+        "width": 20,
+        "height": 8,
+        "length": 20
+      },
+      "ldraw_id": "3024.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "plate_1x2",
+      "name": "Plate 1x2",
+      "category": "plate",
+      "dimensions": {
+        "width": 40,
+        "height": 8,
+        "length": 20
+      },
+      "ldraw_id": "3023.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "plate_1x4",
+      "name": "Plate 1x4",
+      "category": "plate",
+      "dimensions": {
+        "width": 80,
+        "height": 8,
+        "length": 20
+      },
+      "ldraw_id": "3710.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "plate_2x2",
+      "name": "Plate 2x2",
+      "category": "plate",
+      "dimensions": {
+        "width": 40,
+        "height": 8,
+        "length": 40
+      },
+      "ldraw_id": "3022.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "plate_2x4",
+      "name": "Plate 2x4",
+      "category": "plate",
+      "dimensions": {
+        "width": 80,
+        "height": 8,
+        "length": 40
+      },
+      "ldraw_id": "3020.dat",
+      "colors": ["red", "blue", "yellow", "green", "white", "black"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "baseplate_16x16",
+      "name": "Baseplate 16x16",
+      "category": "baseplate",
+      "dimensions": {
+        "width": 320,
+        "height": 8,
+        "length": 320
+      },
+      "ldraw_id": "3867.dat",
+      "colors": ["green", "gray", "blue"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    },
+    {
+      "id": "baseplate_32x32",
+      "name": "Baseplate 32x32",
+      "category": "baseplate",
+      "dimensions": {
+        "width": 640,
+        "height": 8,
+        "length": 640
+      },
+      "ldraw_id": "3811.dat",
+      "colors": ["green", "gray", "blue"],
+      "faces": {
+        "+y": {
+          "attachments": ["stud"]
+        },
+        "-y": {
+          "attachments": ["anti_stud"]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "name": "Wood cross",
+    "description": "Two 2x4 lumber pieces forming a cross, one laid flat and the other perpendicular on top at the midpoint",
+    "library": "wood_basic",
+    "version": 1
+  },
+  "pieces": [
+    {
+      "id": "horizontal",
+      "type": "lumber_2x4",
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "length_override": 600,
+      "connections": [
+        { "face": "+y", "to_piece": "vertical", "to_face": "-y" }
+      ]
+    },
+    {
+      "id": "vertical",
+      "type": "lumber_2x4",
+      "position": [277.5, 95, -277.5],
+      "rotation": [0, 90, 0],
+      "length_override": 600,
+      "connections": [
+        { "face": "-y", "to_piece": "horizontal", "to_face": "+y" }
+      ]
+    }
+  ]
+}

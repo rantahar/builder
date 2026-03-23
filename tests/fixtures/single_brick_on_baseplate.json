@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "name": "Single brick on baseplate",
+    "description": "One 2x4 red brick centered on a 16x16 baseplate",
+    "library": "lego_basic",
+    "version": 1
+  },
+  "pieces": [
+    {
+      "id": "baseplate",
+      "type": "baseplate_16x16",
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "color": "green",
+      "connections": [
+        { "face": "+y", "to_piece": "brick1", "to_face": "-y" }
+      ]
+    },
+    {
+      "id": "brick1",
+      "type": "brick_2x4",
+      "position": [120, 8, 140],
+      "rotation": [0, 0, 0],
+      "color": "red",
+      "connections": [
+        { "face": "-y", "to_piece": "baseplate", "to_face": "+y" }
+      ]
+    }
+  ]
+}

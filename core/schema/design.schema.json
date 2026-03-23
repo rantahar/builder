@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildscaffold.dev/schema/design.schema.json",
+  "title": "BuildScaffold Design Document",
+  "description": "A design is an ordered list of piece placements. Each piece declares its position, rotation, and connections to other pieces. For grid-locked libraries (e.g. Lego), the validator ensures all overlapping attachment points are connected. For non-grid-locked libraries (e.g. wood), only declared connections exist.",
+  "type": "object",
+  "required": ["meta", "pieces"],
+  "additionalProperties": true,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["name", "library"],
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Design name"
+        },
+        "description": {
+          "type": "string"
+        },
+        "library": {
+          "type": "string",
+          "description": "Library ID this design uses"
+        },
+        "version": {
+          "type": "integer",
+          "default": 1
+        }
+      }
+    },
+    "pieces": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/placed_piece" },
+      "description": "Ordered list of piece placements. Order reflects the build sequence (bottom-up)."
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "pieces"],
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "pieces": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Piece IDs belonging to this subassembly"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "face_normal": {
+      "type": "string",
+      "enum": ["+x", "-x", "+y", "-y", "+z", "-z"]
+    },
+    "placed_piece": {
+      "type": "object",
+      "required": ["id", "type", "position"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique instance ID within this design"
+        },
+        "type": {
+          "type": "string",
+          "description": "References a piece ID from the library"
+        },
+        "position": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 3,
+          "maxItems": 3,
+          "description": "[x, y, z] world position of the piece origin, in library units"
+        },
+        "rotation": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 3,
+          "maxItems": 3,
+          "default": [0, 0, 0],
+          "description": "[rx, ry, rz] Euler angles in degrees"
+        },
+        "color": {
+          "type": "string"
+        },
+        "length_override": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "For variable_length pieces: actual cut length in library units"
+        },
+        "connections": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/connection" },
+          "default": [],
+          "description": "Connections from this piece to other pieces. Each connection declares which face of this piece touches which face of another piece."
+        }
+      }
+    },
+    "connection": {
+      "type": "object",
+      "required": ["face", "to_piece", "to_face"],
+      "additionalProperties": true,
+      "properties": {
+        "face": {
+          "$ref": "#/$defs/face_normal",
+          "description": "Face of this piece involved in the connection"
+        },
+        "to_piece": {
+          "type": "string",
+          "description": "ID of the other piece"
+        },
+        "to_face": {
+          "$ref": "#/$defs/face_normal",
+          "description": "Face of the other piece involved in the connection"
+        },
+        "fastener": {
+          "type": "string",
+          "description": "For non-grid-locked connections: fastener type (e.g. screw spec)"
+        }
+      }
+    }
+  }
+}

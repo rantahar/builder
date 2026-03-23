@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "name": "L-shape",
+    "description": "An L-shaped structure: two 2x4 bricks on a baseplate forming an L when viewed from above",
+    "library": "lego_basic",
+    "version": 1
+  },
+  "pieces": [
+    {
+      "id": "baseplate",
+      "type": "baseplate_16x16",
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "color": "green",
+      "connections": [
+        { "face": "+y", "to_piece": "arm_a", "to_face": "-y" },
+        { "face": "+y", "to_piece": "arm_b", "to_face": "-y" }
+      ]
+    },
+    {
+      "id": "arm_a",
+      "type": "brick_2x4",
+      "position": [120, 8, 140],
+      "rotation": [0, 0, 0],
+      "color": "red",
+      "connections": [
+        { "face": "-y", "to_piece": "baseplate", "to_face": "+y" },
+        { "face": "+y", "to_piece": "corner", "to_face": "-y" }
+      ]
+    },
+    {
+      "id": "arm_b",
+      "type": "brick_2x4",
+      "position": [160, 8, 140],
+      "rotation": [0, 90, 0],
+      "color": "blue",
+      "connections": [
+        { "face": "-y", "to_piece": "baseplate", "to_face": "+y" }
+      ]
+    },
+    {
+      "id": "corner",
+      "type": "brick_2x2",
+      "position": [120, 32, 140],
+      "rotation": [0, 0, 0],
+      "color": "yellow",
+      "connections": [
+        { "face": "-y", "to_piece": "arm_a", "to_face": "+y" }
+      ]
+    }
+  ]
+}

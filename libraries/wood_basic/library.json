@@ -1,0 +1,108 @@
+{
+  "id": "wood_basic",
+  "name": "Standard Wood Lumber",
+  "unit": "mm",
+  "attachment_types": {
+    "screw_entry": {
+      "margin": 20,
+      "spacing": 50,
+      "compatible_with": ["screw_receiver"],
+      "grid_locked": false
+    },
+    "screw_receiver": {
+      "margin": 20,
+      "spacing": 50,
+      "compatible_with": ["screw_entry"],
+      "grid_locked": false
+    }
+  },
+  "pieces": [
+    {
+      "id": "lumber_2x2",
+      "name": "2x2 Lumber",
+      "category": "post",
+      "dimensions": {
+        "width": 45,
+        "height": 45,
+        "length": 2400
+      },
+      "variable_length": true,
+      "faces": {
+        "+x": { "attachments": ["screw_entry", "screw_receiver"] },
+        "-x": { "attachments": ["screw_entry", "screw_receiver"] },
+        "+y": { "attachments": ["screw_entry", "screw_receiver"] },
+        "-y": { "attachments": ["screw_entry", "screw_receiver"] },
+        "+z": { "attachments": ["screw_entry", "screw_receiver"] },
+        "-z": { "attachments": ["screw_entry", "screw_receiver"] }
+      }
+    },
+    {
+      "id": "lumber_2x4",
+      "name": "2x4 Lumber",
+      "category": "post",
+      "dimensions": {
+        "width": 45,
+        "height": 95,
+        "length": 2400
+      },
+      "variable_length": true,
+      "faces": {
+        "+x": { "attachments": ["screw_entry", "screw_receiver"] },
+        "-x": { "attachments": ["screw_entry", "screw_receiver"] },
+        "+y": { "attachments": ["screw_entry", "screw_receiver"] },
+        "-y": { "attachments": ["screw_entry", "screw_receiver"] },
+        "+z": { "attachments": ["screw_entry", "screw_receiver"] },
+        "-z": { "attachments": ["screw_entry", "screw_receiver"] }
+      }
+    },
+    {
+      "id": "lumber_4x4",
+      "name": "4x4 Lumber",
+      "category": "post",
+      "dimensions": {
+        "width": 95,
+        "height": 95,
+        "length": 2400
+      },
+      "variable_length": true,
+      "faces": {
+        "+x": { "attachments": ["screw_entry", "screw_receiver"] },
+        "-x": { "attachments": ["screw_entry", "screw_receiver"] },
+        "+y": { "attachments": ["screw_entry", "screw_receiver"] },
+        "-y": { "attachments": ["screw_entry", "screw_receiver"] },
+        "+z": { "attachments": ["screw_entry", "screw_receiver"] },
+        "-z": { "attachments": ["screw_entry", "screw_receiver"] }
+      }
+    },
+    {
+      "id": "plank_18x95",
+      "name": "Plank 18x95",
+      "category": "plank",
+      "dimensions": {
+        "width": 95,
+        "height": 18,
+        "length": 2400
+      },
+      "variable_length": true,
+      "faces": {
+        "+y": { "attachments": ["screw_entry"] },
+        "-y": { "attachments": ["screw_entry"] }
+      }
+    },
+    {
+      "id": "plank_18x145",
+      "name": "Plank 18x145",
+      "category": "plank",
+      "dimensions": {
+        "width": 145,
+        "height": 18,
+        "length": 2400
+      },
+      "variable_length": true,
+      "faces": {
+        "+y": { "attachments": ["screw_entry"] },
+        "-y": { "attachments": ["screw_entry"] }
+      }
+    }
+  ]
+}

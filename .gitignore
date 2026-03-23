@@ -1,0 +1,7 @@
+.map
+CLAUDE.md
+.vscode
+
+__pycache__/
+*.pyc
+
