@@ -317,7 +317,7 @@ def _check_declaration_order(placed: list[dict]) -> list[ValidationError]:
 # ---------------------------------------------------------------------------
 
 
-def _effective_dims(piece_data: dict, library: "Library") -> tuple[float, float, float]:
+def effective_dims(piece_data: dict, library: "Library") -> tuple[float, float, float]:
     """Get effective (width, height, length) after applying rotation."""
     piece_def = library.get_piece(piece_data["type"])
 
@@ -369,7 +369,7 @@ def _check_aabb_collisions(
     aabbs: list[tuple[list[float], list[float]]] = []
     for piece in placed:
         pos = piece.get("position", [0.0, 0.0, 0.0])
-        dims = _effective_dims(piece, library)
+        dims = effective_dims(piece, library)
         mn = [pos[0], pos[1], pos[2]]
         mx = [pos[0] + dims[0], pos[1] + dims[1], pos[2] + dims[2]]
         aabbs.append((mn, mx))
@@ -414,7 +414,7 @@ def _check_face_coplanarity(
     for piece in placed:
         pid = piece["id"]
         try:
-            dims_a = _effective_dims(piece, library)
+            dims_a = effective_dims(piece, library)
         except KeyError:
             continue
         pos_a = piece.get("position", [0.0, 0.0, 0.0])
@@ -439,7 +439,7 @@ def _check_face_coplanarity(
                 continue
 
             try:
-                dims_b = _effective_dims(target, library)
+                dims_b = effective_dims(target, library)
             except KeyError:
                 continue
             pos_b = target.get("position", [0.0, 0.0, 0.0])
@@ -474,7 +474,7 @@ def _check_face_overlap(
     for piece in placed:
         pid = piece["id"]
         try:
-            dims_a = _effective_dims(piece, library)
+            dims_a = effective_dims(piece, library)
         except KeyError:
             continue
         pos_a = piece.get("position", [0.0, 0.0, 0.0])
@@ -501,7 +501,7 @@ def _check_face_overlap(
                 continue
 
             try:
-                dims_b = _effective_dims(target, library)
+                dims_b = effective_dims(target, library)
             except KeyError:
                 continue
             pos_b = target.get("position", [0.0, 0.0, 0.0])
@@ -704,7 +704,7 @@ def _check_screw_collisions(
             continue
 
         pid = piece["id"]
-        receiver_dims = _effective_dims(piece, library)
+        receiver_dims = effective_dims(piece, library)
 
         # For each axis, gather connections entering this piece from + and - faces
         for axis_idx in range(3):
@@ -746,8 +746,8 @@ def _check_screw_collisions(
                     p_piece_data = p_entry["piece"]
                     m_piece_data = m_entry["piece"]
 
-                    p_dims = _effective_dims(p_piece_data, library)
-                    m_dims = _effective_dims(m_piece_data, library)
+                    p_dims = effective_dims(p_piece_data, library)
+                    m_dims = effective_dims(m_piece_data, library)
 
                     p_thickness = p_dims[axis_idx]
                     m_thickness = m_dims[axis_idx]

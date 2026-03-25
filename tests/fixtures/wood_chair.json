@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "name": "Wooden Chair",
+    "description": "A chair with 2 short front legs, 2 tall back legs, horizontal rails forming a seat frame, plywood seat, and a lumber backrest.",
+    "library": "wood_basic"
+  },
+  "steps": [
+    { "action": "place", "piece": "fl_leg", "type": "lumber_2x2", "rotation": [90, 0, 0], "length": 430 },
+
+    { "action": "attach", "piece": "left_rail", "type": "lumber_2x2",
+      "face": "-z", "to": "fl_leg", "to_face": "+z",
+      "length": 360, "offset": [0, 385], "fastener": "4x70" },
+
+    { "action": "attach", "piece": "bl_leg", "type": "lumber_2x2", "rotation": [90, 0, 0],
+      "face": "-z", "to": "left_rail", "to_face": "+z",
+      "length": 900, "offset": [0, -385], "fastener": "4x70" },
+
+    { "action": "attach", "piece": "front_rail", "type": "lumber_2x2", "rotation": [0, 90, 0],
+      "face": "-x", "to": "fl_leg", "to_face": "+x",
+      "length": 360, "offset": [385, 0], "fastener": "4x70" },
+
+    { "action": "attach", "piece": "fr_leg", "type": "lumber_2x2", "rotation": [90, 0, 0],
+      "face": "-x", "to": "front_rail", "to_face": "+x",
+      "length": 430, "offset": [-385, 0], "fastener": "4x70" },
+
+    { "action": "attach", "piece": "right_rail", "type": "lumber_2x2",
+      "face": "-z", "to": "fr_leg", "to_face": "+z",
+      "length": 360, "offset": [0, 385], "fastener": "4x70" },
+
+    { "action": "attach", "piece": "back_rail", "type": "lumber_2x2", "rotation": [0, 90, 0],
+      "face": "-x", "to": "bl_leg", "to_face": "+x",
+      "length": 360, "offset": [385, 0], "fastener": "4x70" },
+
+    { "action": "attach", "piece": "br_leg", "type": "lumber_2x2", "rotation": [90, 0, 0],
+      "face": "-z", "to": "right_rail", "to_face": "+z",
+      "length": 900, "offset": [0, -385], "fastener": "4x70" },
+
+    { "action": "connect", "piece": "br_leg", "face": "-x", "to": "back_rail", "to_face": "+x", "fastener": "4x70" },
+
+    { "action": "attach", "piece": "seat", "type": "plywood_18mm",
+      "face": "-y", "to": "left_rail", "to_face": "+y",
+      "width": 450, "length": 405, "offset": [0, -45], "fastener": "4x50" },
+
+    { "action": "connect", "piece": "seat", "face": "-y", "to": "right_rail", "to_face": "+y", "fastener": "4x50" },
+    { "action": "connect", "piece": "seat", "face": "-y", "to": "front_rail", "to_face": "+y", "fastener": "4x50" },
+
+    { "action": "attach", "piece": "backrest", "type": "lumber_2x4", "rotation": [0, 90, 0],
+      "face": "-x", "to": "bl_leg", "to_face": "+x",
+      "length": 360, "offset": [805, 0], "fastener": "4x70" },
+
+    { "action": "connect", "piece": "backrest", "face": "+x", "to": "br_leg", "to_face": "-x", "fastener": "4x70" }
+  ],
+  "groups": [
+    { "id": "legs", "pieces": ["fl_leg", "fr_leg", "bl_leg", "br_leg"] },
+    { "id": "frame", "pieces": ["left_rail", "right_rail", "front_rail", "back_rail"] },
+    { "id": "surfaces", "pieces": ["seat", "backrest"] }
+  ]
+}

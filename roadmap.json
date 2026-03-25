@@ -76,6 +76,9 @@
       "goal": "An LLM can generate and iterate on designs given a text description.",
       "status": "planned",
       "tasks": [
+        {"text": "Write `core/builder.py` — position solver that computes piece positions from attachment declarations (`start_design`, `add_piece`, `add_connection`). The AI agent uses this to build designs piece-by-piece without calculating coordinates", "done": true},
+        {"text": "Write the AI design guide in `building-guide.md` — attachment-first building process, piece orientation, face labels, offset alignment, connection rules, piece library reference", "done": true},
+        {"text": "Define `core/schema/buildsteps.schema.json` — JSON build steps format (place/attach/connect actions) as the source format for designs. Add `build()` compiler in `core/builder.py` that compiles build steps into design JSON", "done": true},
         {"text": "Write `core/agent.py` -- the design agent loop with system prompt construction (library docs, schema, design state, validation report, examples)", "done": false},
         {"text": "Incremental building: agent adds bricks iteratively, validator runs after each addition, errors fed back immediately", "done": false},
         {"text": "Visual self-evaluation: renderer produces screenshots fed back to the agent for iteration", "done": false},

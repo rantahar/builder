@@ -261,6 +261,8 @@ Every connection must be physically achievable by the builder:
 
 This is not yet enforced by the validator but is a design constraint for the instruction generator and AI agent to respect.
 
+Designs are authored as **build steps JSON** (an ordered list of place/attach/connect steps) and compiled into **design JSON** (the validated output with computed positions) by `core/builder.py`. The build steps format is the source of truth; the design JSON is a compiled artifact. See [`building-guide.md`](building-guide.md) for the full AI design guide.
+
 ## Design Decisions
 
 **Why JSON, not a visual editor?** The AI needs to read and write the design. Text is the natural interface for LLMs. The 3D viewport is for the human; the JSON is for the AI. Same as code — humans read the rendered output, the compiler reads the source.

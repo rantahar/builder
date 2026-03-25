@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildscaffold.dev/schema/buildsteps.schema.json",
+  "title": "BuildScaffold Build Steps",
+  "description": "An ordered list of assembly steps that compile into a design. Each step places a piece, attaches a new piece to an existing one, or adds a secondary connection. The builder computes positions automatically from attachments.",
+  "type": "object",
+  "required": ["meta", "steps"],
+  "additionalProperties": true,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["name", "library"],
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Design name"
+        },
+        "description": {
+          "type": "string"
+        },
+        "library": {
+          "type": "string",
+          "description": "Library ID this design uses"
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/step" },
+      "description": "Ordered list of build steps. First step must be 'place'. Subsequent steps are 'attach' or 'connect'."
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "pieces"],
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "pieces": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "face_normal": {
+      "type": "string",
+      "enum": ["+x", "-x", "+y", "-y", "+z", "-z"]
+    },
+    "rotation": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 3,
+      "maxItems": 3,
+      "default": [0, 0, 0],
+      "description": "[rx, ry, rz] Euler angles in degrees (90° increments)"
+    },
+    "step": {
+      "oneOf": [
+        { "$ref": "#/$defs/place_step" },
+        { "$ref": "#/$defs/attach_step" },
+        { "$ref": "#/$defs/connect_step" }
+      ]
+    },
+    "place_step": {
+      "type": "object",
+      "required": ["action", "piece", "type"],
+      "additionalProperties": false,
+      "description": "Place the first piece at a position (default: origin).",
+      "properties": {
+        "action": { "const": "place" },
+        "piece": { "type": "string", "description": "Unique piece ID" },
+        "type": { "type": "string", "description": "Piece type from the library" },
+        "rotation": { "$ref": "#/$defs/rotation" },
+        "position": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 3,
+          "maxItems": 3,
+          "default": [0, 0, 0],
+          "description": "Starting position (default: origin)"
+        },
+        "length": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Cut length for variable_length pieces"
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Cut width for variable_width pieces"
+        }
+      }
+    },
+    "attach_step": {
+      "type": "object",
+      "required": ["action", "piece", "type", "face", "to", "to_face"],
+      "additionalProperties": false,
+      "description": "Attach a new piece to an existing piece. Position is computed from the attachment.",
+      "properties": {
+        "action": { "const": "attach" },
+        "piece": { "type": "string", "description": "Unique piece ID for the new piece" },
+        "type": { "type": "string", "description": "Piece type from the library" },
+        "rotation": { "$ref": "#/$defs/rotation" },
+        "face": { "$ref": "#/$defs/face_normal", "description": "Face of the new piece" },
+        "to": { "type": "string", "description": "ID of the existing piece to attach to" },
+        "to_face": { "$ref": "#/$defs/face_normal", "description": "Face of the existing piece" },
+        "offset": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 2,
+          "maxItems": 2,
+          "default": [0, 0],
+          "description": "[u, v] offset on the contact plane from the existing face's min corner"
+        },
+        "length": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "fastener": {
+          "type": "string",
+          "description": "Fastener spec, e.g. '4x70'"
+        }
+      }
+    },
+    "connect_step": {
+      "type": "object",
+      "required": ["action", "piece", "face", "to", "to_face"],
+      "additionalProperties": false,
+      "description": "Add a secondary connection between two existing pieces. Does not change positions.",
+      "properties": {
+        "action": { "const": "connect" },
+        "piece": { "type": "string", "description": "ID of the first piece" },
+        "face": { "$ref": "#/$defs/face_normal", "description": "Face of the first piece" },
+        "to": { "type": "string", "description": "ID of the second piece" },
+        "to_face": { "$ref": "#/$defs/face_normal", "description": "Face of the second piece" },
+        "fastener": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
