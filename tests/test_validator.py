@@ -292,3 +292,44 @@ def test_broken_chair_coplanarity(wood):
     report = validate(design, wood)
     assert not report.is_valid
     assert any(e.code == "FACE_NOT_COPLANAR" for e in report.errors)
+
+
+# ---------------------------------------------------------------------------
+# Build steps generation
+# ---------------------------------------------------------------------------
+
+
+def test_build_steps_generated(lego):
+    """Validator produces build steps for a valid design."""
+    from core.validator import validate
+    design = load_fixture("four_brick_wall.json")
+    report = validate(design, lego)
+    assert report.is_valid
+    assert report.build_steps is not None
+    assert "steps" in report.build_steps
+    assert report.build_steps["steps"][0]["action"] == "place"
+
+
+def test_build_steps_round_trip(wood):
+    """Build steps from validator compile back to a valid design."""
+    from core.builder import build
+    from core.validator import validate
+    design = load_fixture("wood_cross.json")
+    report = validate(design, wood)
+    assert report.build_steps is not None
+    # Compile build steps back into a design
+    design2 = build(report.build_steps, wood)
+    report2 = validate(design2, wood)
+    assert report2.is_valid, f"Round-trip errors: {[(e.code, e.message) for e in report2.errors]}"
+
+
+def test_build_steps_not_generated_on_stage0_failure(lego):
+    """Build steps are not generated when stage 0 fails."""
+    from core.validator import validate
+    design = {
+        "meta": {"name": "test", "library": "lego_basic"},
+        "pieces": [{"id": "p1", "type": "nonexistent", "position": [0, 0, 0]}],
+    }
+    report = validate(design, lego)
+    assert not report.is_valid
+    assert report.build_steps is None
