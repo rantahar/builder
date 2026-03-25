@@ -26,6 +26,7 @@ class ValidationReport:
 
     errors: list[ValidationError] = field(default_factory=list)
     warnings: list[ValidationError] = field(default_factory=list)
+    build_steps: dict | None = None
 
     @property
     def is_valid(self) -> bool:
@@ -83,6 +84,9 @@ def validate(design: dict, library: "Library") -> ValidationReport:
         # Stage 4: wood-specific
         for e in _check_screw_collisions(placed, library, pieces_by_id):
             report.add(e)
+
+        # Generate build steps from the design
+        report.build_steps = _generate_build_steps(design, library, pieces_by_id)
 
     return report
 
@@ -615,6 +619,149 @@ def _check_connectivity(placed: list[dict]) -> list[ValidationError]:
                 )
             )
     return errors
+
+
+# ---------------------------------------------------------------------------
+# Build steps generation
+# ---------------------------------------------------------------------------
+
+
+def _generate_build_steps(
+    design: dict, library: "Library", pieces_by_id: dict[str, dict]
+) -> dict:
+    """Derive build steps JSON from a design, as a byproduct of validation.
+
+    Walks the pieces array in declaration order. The first piece becomes a
+    'place' step. Each subsequent piece picks its first connection to a prior
+    piece as the primary 'attach' step, with offset reverse-engineered from
+    positions. Additional connections to prior pieces become 'connect' steps.
+    """
+    placed = design.get("pieces", [])
+    if not placed:
+        return {"meta": design.get("meta", {}), "steps": []}
+
+    steps: list[dict] = []
+    declared: set[str] = set()
+
+    for i, piece in enumerate(placed):
+        pid = piece["id"]
+
+        if i == 0:
+            step: dict = {
+                "action": "place",
+                "piece": pid,
+                "type": piece["type"],
+            }
+            rotation = piece.get("rotation", [0, 0, 0])
+            if rotation != [0, 0, 0]:
+                step["rotation"] = rotation
+            position = piece.get("position", [0, 0, 0])
+            if position != [0, 0, 0] and position != [0.0, 0.0, 0.0]:
+                step["position"] = position
+            if "length_override" in piece:
+                step["length"] = piece["length_override"]
+            if "width_override" in piece:
+                step["width"] = piece["width_override"]
+            steps.append(step)
+            declared.add(pid)
+            continue
+
+        # Split connections into primary (first to a prior piece) and secondary
+        primary_conn = None
+        secondary_conns: list[dict] = []
+
+        for conn in piece.get("connections", []):
+            target = conn.get("to_piece", "")
+            if target in declared:
+                if primary_conn is None:
+                    primary_conn = conn
+                else:
+                    secondary_conns.append(conn)
+
+        # Emit the attach step
+        if primary_conn is not None:
+            target_piece = pieces_by_id[primary_conn["to_piece"]]
+            offset = _compute_offset(piece, primary_conn, target_piece, library)
+
+            step = {
+                "action": "attach",
+                "piece": pid,
+                "type": piece["type"],
+                "face": primary_conn["face"],
+                "to": primary_conn["to_piece"],
+                "to_face": primary_conn["to_face"],
+            }
+            rotation = piece.get("rotation", [0, 0, 0])
+            if rotation != [0, 0, 0]:
+                step["rotation"] = rotation
+            if offset != [0.0, 0.0]:
+                step["offset"] = offset
+            if "length_override" in piece:
+                step["length"] = piece["length_override"]
+            if "width_override" in piece:
+                step["width"] = piece["width_override"]
+            if primary_conn.get("fastener"):
+                step["fastener"] = primary_conn["fastener"]
+            steps.append(step)
+        else:
+            # No connection to a prior piece — emit as place (orphan)
+            step = {
+                "action": "place",
+                "piece": pid,
+                "type": piece["type"],
+            }
+            rotation = piece.get("rotation", [0, 0, 0])
+            if rotation != [0, 0, 0]:
+                step["rotation"] = rotation
+            position = piece.get("position", [0, 0, 0])
+            if position != [0, 0, 0] and position != [0.0, 0.0, 0.0]:
+                step["position"] = position
+            if "length_override" in piece:
+                step["length"] = piece["length_override"]
+            if "width_override" in piece:
+                step["width"] = piece["width_override"]
+            steps.append(step)
+
+        # Emit connect steps for secondary connections to prior pieces
+        for conn in secondary_conns:
+            cstep: dict = {
+                "action": "connect",
+                "piece": pid,
+                "face": conn["face"],
+                "to": conn["to_piece"],
+                "to_face": conn["to_face"],
+            }
+            if conn.get("fastener"):
+                cstep["fastener"] = conn["fastener"]
+            steps.append(cstep)
+
+        declared.add(pid)
+
+    result: dict = {"meta": design.get("meta", {}), "steps": steps}
+    if "groups" in design:
+        result["groups"] = design["groups"]
+    return result
+
+
+def _compute_offset(
+    new_piece: dict,
+    conn: dict,
+    existing_piece: dict,
+    library: "Library",
+) -> list[float]:
+    """Reverse-engineer the offset from known positions."""
+    existing_face = conn["to_face"]
+    existing_axis_idx = _FACE_AXIS[existing_face][0]
+    other_axes = [i for i in range(3) if i != existing_axis_idx]
+    u_axis, v_axis = other_axes
+
+    new_pos = new_piece.get("position", [0, 0, 0])
+    existing_pos = existing_piece.get("position", [0, 0, 0])
+
+    return [
+        round(new_pos[u_axis] - existing_pos[u_axis], 4),
+        round(new_pos[v_axis] - existing_pos[v_axis], 4),
+    ]
 
 
 # ---------------------------------------------------------------------------
