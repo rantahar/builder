@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "name": "Simple wooden chair",
+    "description": "A chair with 4 legs, plywood seat, and plywood backrest. Back legs extend above the seat to support the backrest.",
+    "library": "wood_basic",
+    "version": 1
+  },
+  "pieces": [
+    {
+      "id": "front_left_leg",
+      "type": "lumber_2x2",
+      "position": [0, 0, 0],
+      "rotation": [90, 0, 0],
+      "length_override": 430,
+      "connections": [
+        { "face": "+y", "to_piece": "seat", "to_face": "-y", "fastener": "4x50" }
+      ]
+    },
+    {
+      "id": "front_right_leg",
+      "type": "lumber_2x2",
+      "position": [355, 0, 0],
+      "rotation": [90, 0, 0],
+      "length_override": 430,
+      "connections": [
+        { "face": "+y", "to_piece": "seat", "to_face": "-y", "fastener": "4x50" }
+      ]
+    },
+    {
+      "id": "back_left_leg",
+      "type": "lumber_2x2",
+      "position": [0, 0, 355],
+      "rotation": [90, 0, 0],
+      "length_override": 900,
+      "connections": [
+        { "face": "+y", "to_piece": "seat", "to_face": "-y", "fastener": "4x50" },
+        { "face": "+z", "to_piece": "backrest", "to_face": "-y", "fastener": "4x50" }
+      ]
+    },
+    {
+      "id": "back_right_leg",
+      "type": "lumber_2x2",
+      "position": [355, 0, 355],
+      "rotation": [90, 0, 0],
+      "length_override": 900,
+      "connections": [
+        { "face": "+y", "to_piece": "seat", "to_face": "-y", "fastener": "4x50" },
+        { "face": "+z", "to_piece": "backrest", "to_face": "-y", "fastener": "4x50" }
+      ]
+    },
+    {
+      "id": "seat",
+      "type": "plywood_18mm",
+      "position": [0, 430, 0],
+      "rotation": [0, 0, 0],
+      "width_override": 400,
+      "length_override": 400,
+      "connections": [
+        { "face": "-y", "to_piece": "front_left_leg", "to_face": "+y", "fastener": "4x50" },
+        { "face": "-y", "to_piece": "front_right_leg", "to_face": "+y", "fastener": "4x50" },
+        { "face": "-y", "to_piece": "back_left_leg", "to_face": "+y", "fastener": "4x50" },
+        { "face": "-y", "to_piece": "back_right_leg", "to_face": "+y", "fastener": "4x50" }
+      ]
+    },
+    {
+      "id": "backrest",
+      "type": "plywood_18mm",
+      "position": [0, 448, 355],
+      "rotation": [90, 0, 0],
+      "width_override": 400,
+      "length_override": 452,
+      "connections": [
+        { "face": "-y", "to_piece": "back_left_leg", "to_face": "+z", "fastener": "4x50" },
+        { "face": "-y", "to_piece": "back_right_leg", "to_face": "+z", "fastener": "4x50" }
+      ]
+    }
+  ],
+  "groups": [
+    { "id": "legs", "name": "Legs", "pieces": ["front_left_leg", "front_right_leg", "back_left_leg", "back_right_leg"] },
+    { "id": "surfaces", "name": "Surfaces", "pieces": ["seat", "backrest"] }
+  ]
+}

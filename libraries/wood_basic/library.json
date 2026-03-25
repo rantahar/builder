@@ -103,6 +103,22 @@
         "+y": { "attachments": ["screw_entry"] },
         "-y": { "attachments": ["screw_entry"] }
       }
+    },
+    {
+      "id": "plywood_18mm",
+      "name": "Plywood Panel 18mm",
+      "category": "panel",
+      "dimensions": {
+        "width": 1200,
+        "height": 18,
+        "length": 2400
+      },
+      "variable_length": true,
+      "variable_width": true,
+      "faces": {
+        "+y": { "attachments": ["screw_entry", "screw_receiver"] },
+        "-y": { "attachments": ["screw_entry", "screw_receiver"] }
+      }
     }
   ]
 }

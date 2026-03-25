@@ -1,0 +1,15 @@
+{
+  "issues": [
+    {
+      "id": "ldraw-subparts-missing",
+      "title": "LDraw geometry is bounding-box only — sub-part files not downloaded",
+      "status": "open",
+      "description": "The 18 downloaded `.dat` files mostly reference sub-parts (e.g. `s\\3001s01.dat`) that we don't have. `Piece.get_geometry()` falls back to dimension-accurate bounding boxes. This is sufficient for collision detection and layout (Sprints 3-4), but the renderer (Sprint 4) will need detailed meshes for visual fidelity. Either download the full LDraw parts library or fetch the specific sub-part files.",
+      "tasks": [
+        {"text": "Download LDraw sub-part files (`s/` directory) for all 18 pieces", "done": false},
+        {"text": "Update `_parse_ldraw_dat` to resolve type-1 subfile references recursively", "done": false},
+        {"text": "Verify rendered meshes visually match expected brick shapes", "done": false}
+      ]
+    }
+  ]
+}

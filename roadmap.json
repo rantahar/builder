@@ -1,0 +1,160 @@
+{
+  "sprints": [
+    {
+      "number": 1,
+      "title": "Schema and hand-written designs",
+      "goal": "Define the data formats and prove you can describe a Lego design as JSON.",
+      "status": "complete",
+      "tasks": [
+        {"text": "Define `core/schema/library.schema.json` -- piece library format (piece ID, dimensions, connection points, LDraw reference, colors)", "done": true},
+        {"text": "Define `core/schema/design.schema.json` -- design document format (meta, pieces with position/rotation/connections, groups)", "done": true},
+        {"text": "Write 2-3 hand-crafted design JSON files as test fixtures in `tests/fixtures/`: single brick on baseplate, 2x4 wall (4 bricks stacked), L-shaped structure", "done": true},
+        {"text": "Add screw definitions to the wood_basic library and library schema: screw types with length, diameter. Update design schema so connections can reference a `fastener` field", "done": true},
+        {"text": "Write `core/library.py` -- load a library JSON, look up pieces by ID", "done": true}
+      ],
+      "done_when": "You can write a design JSON by hand and validate it against the schema. Test fixtures exist as ground truth for later sprints."
+    },
+    {
+      "number": 2,
+      "title": "Piece library from LDraw",
+      "goal": "Populate the Lego piece library with real parts and parse LDraw geometry.",
+      "status": "complete",
+      "tasks": [
+        {"text": "Create `libraries/lego_basic/library.json` with ~20 piece types (bricks, plates, baseplates) mapped to LDraw part IDs", "done": true},
+        {"text": "Define connection points for each piece (studs on top, anti-studs on bottom, count matching stud grid)", "done": true},
+        {"text": "Download LDraw parts library subset -- `.dat` files for the pieces we use into `libraries/lego_basic/parts/`", "done": true},
+        {"text": "Extend `core/library.py` to parse LDraw `.dat` files into Trimesh geometry", "done": true}
+      ],
+      "done_when": "`library.load(\"lego_basic\")` returns a catalog. `library.get_geometry(\"brick_2x4\")` returns a Trimesh mesh inspectable in a Python REPL."
+    },
+    {
+      "number": 3,
+      "title": "Validator",
+      "goal": "Given a design JSON and a piece library, report all errors.",
+      "status": "complete",
+      "tasks": [
+        {"text": "Write `core/validator.py` -- takes a design dict and library, returns a validation report (errors and warnings referencing piece IDs)", "done": true},
+        {"text": "Connection validity: check compatible point types and position alignment within tolerance", "done": true},
+        {"text": "Collision detection: 3D occupancy grid at stud-pitch resolution, rasterize bounding volumes, flag overlaps", "done": true},
+        {"text": "Screw collision detection (wood only): check screws entering a post from opposite faces don't overlap inside the piece", "done": true},
+        {"text": "Write `core/stability/base.py` -- stability checker interface (`check(design) -> list[piece_id]`)", "done": true},
+        {"text": "Write `core/stability/lego.py` -- graph reachability from ground via BFS from baseplates", "done": true},
+        {"text": "Completeness check: detect disconnected subgraphs (single connected component per object)", "done": true},
+        {"text": "Test against Sprint 1 fixtures + intentionally broken designs in `tests/test_validator.py`", "done": true}
+      ],
+      "done_when": "`validator.validate(design, library)` returns a structured report. Broken designs produce specific error messages. All tests pass."
+    },
+    {
+      "number": 4,
+      "title": "Offscreen renderer",
+      "goal": "Produce multi-angle PNG images from a design JSON.",
+      "status": "planned",
+      "tasks": [
+        {"text": "Write `core/renderer.py` -- takes design dict and library, produces PNG images", "done": false},
+        {"text": "Load piece geometry from library (Trimesh meshes), place at design position/rotation with color materials", "done": false},
+        {"text": "Render from 6 fixed camera angles: front, back, left, right, top, isometric", "done": false},
+        {"text": "Test with hand-crafted fixtures -- visually confirm rendered images in `tests/test_renderer.py`", "done": false}
+      ],
+      "done_when": "`renderer.render(design, library, output_dir)` writes 6 PNGs showing correct Lego structures from multiple angles."
+    },
+    {
+      "number": 5,
+      "title": "CLI skeleton and manual design loop",
+      "goal": "A terminal interface where you can load, validate, and render designs interactively.",
+      "status": "planned",
+      "tasks": [
+        {"text": "Write `cli/main.py` -- entry point, argument parsing (project directory, library selection)", "done": false},
+        {"text": "Write `cli/display.py` -- Rich-formatted output for validation reports, piece lists, design summaries", "done": false},
+        {"text": "Implement commands: `load`, `validate`, `render`, `export`, `quit`", "done": false},
+        {"text": "Add LDraw `.ldr` export in `core/exporter.py` -- convert design JSON to LDraw format", "done": false}
+      ],
+      "done_when": "Run `python -m cli`, load a hand-written design, see colored validation results, view rendered images. Manual edit-reload-validate-render loop works."
+    },
+    {
+      "number": 6,
+      "title": "AI agent loop",
+      "goal": "An LLM can generate and iterate on designs given a text description.",
+      "status": "planned",
+      "tasks": [
+        {"text": "Write `core/agent.py` -- the design agent loop with system prompt construction (library docs, schema, design state, validation report, examples)", "done": false},
+        {"text": "Incremental building: agent adds bricks iteratively, validator runs after each addition, errors fed back immediately", "done": false},
+        {"text": "Visual self-evaluation: renderer produces screenshots fed back to the agent for iteration", "done": false},
+        {"text": "Convergence logic: stop after N iterations or when agent declares complete", "done": false},
+        {"text": "Model-agnostic LLM interface (any provider accepting messages + images)", "done": false},
+        {"text": "Test with simple prompt (\"a 4x4 tower, 6 bricks tall\") in `tests/test_agent.py`", "done": false}
+      ],
+      "done_when": "`agent.design(\"a small table\", library)` runs the full loop and returns a validated design JSON with inspectable intermediate steps."
+    },
+    {
+      "number": 7,
+      "title": "Instruction generator",
+      "goal": "Given a completed design, produce step-by-step assembly instructions with rendered images.",
+      "status": "planned",
+      "tasks": [
+        {"text": "Write `core/instructor.py` -- takes design dict, returns ordered list of build steps", "done": false},
+        {"text": "Bottom-up ordering (lowest z first), respect subassembly groups, 1-3 pieces per step", "done": false},
+        {"text": "Verify every intermediate state is stable using the stability checker", "done": false},
+        {"text": "Output per step: piece IDs, instruction text, camera angle suggestion", "done": false},
+        {"text": "Render each step: highlight new pieces, mute previous pieces", "done": false},
+        {"text": "Test in `tests/test_instructor.py`", "done": false}
+      ],
+      "done_when": "`instructor.generate_steps(design, library)` returns steps with rendered images showing build progress you can follow."
+    },
+    {
+      "number": 8,
+      "title": "Full CLI integration",
+      "goal": "Complete terminal experience -- describe a design in natural language, get validated design with rendered images and assembly instructions.",
+      "status": "planned",
+      "tasks": [
+        {"text": "Add chat mode to CLI in `cli/chat.py` -- interactive back-and-forth with the AI agent", "done": false},
+        {"text": "Wire agent loop into CLI: show progress (current step, validation status, brick count)", "done": false},
+        {"text": "Auto-run instruction generator after design completion, display steps in terminal", "done": false},
+        {"text": "Instruction step-through: `next`/`prev`/`goto N` commands with rendered images and text", "done": false},
+        {"text": "LLM-generated instruction text replacing template text from Sprint 7", "done": false},
+        {"text": "Project persistence: save design JSON, rendered images, instruction steps, and LDraw export to project directory", "done": false}
+      ],
+      "done_when": "Run `python -m cli`, type \"a small bench\", watch AI build it, step through assembly instructions with images, export as `.ldr`."
+    },
+    {
+      "number": 9,
+      "title": "3D viewport",
+      "goal": "Render a design JSON as an interactive 3D scene in the browser.",
+      "status": "planned",
+      "tasks": [
+        {"text": "Set up React + Three.js (React Three Fiber) frontend project", "done": false},
+        {"text": "Write `web/frontend/src/viewport/Scene.jsx` -- load design JSON, place piece geometries with correct colors", "done": false},
+        {"text": "Write `web/frontend/src/viewport/PieceRenderer.jsx` -- load LDraw geometry as glTF/Three.js format, apply materials", "done": false},
+        {"text": "Orbit controls, zoom, pan. Click-to-select pieces with info display", "done": false}
+      ],
+      "done_when": "Open `localhost:3000`, see a Lego design you can rotate, zoom, and click on. Design JSON loaded as a static file."
+    },
+    {
+      "number": 10,
+      "title": "API server and chat panel",
+      "goal": "Connect the web frontend to the core backend via an API.",
+      "status": "planned",
+      "tasks": [
+        {"text": "Write `web/backend/api.py` -- FastAPI server wrapping core functions (validate, render, agent, instructions)", "done": false},
+        {"text": "WebSocket endpoint for streaming agent progress (incremental steps pushed to client)", "done": false},
+        {"text": "Write `web/backend/session.py` -- manage design sessions (state, conversation history)", "done": false},
+        {"text": "Write `web/frontend/src/panels/ChatPanel.jsx` -- text input, message history, agent responses", "done": false},
+        {"text": "Connect chat panel to 3D viewport: agent updates trigger viewport re-render", "done": false}
+      ],
+      "done_when": "Open web app, type a description in chat, watch the 3D viewport update as the AI builds the design brick by brick."
+    },
+    {
+      "number": 11,
+      "title": "IDE layout and instruction mode",
+      "goal": "The full IDE experience with all three panels and instruction step-through.",
+      "status": "planned",
+      "tasks": [
+        {"text": "Write `web/frontend/src/panels/LibraryPanel.jsx` -- piece library with thumbnails, current parts list with quantities and colors", "done": false},
+        {"text": "Implement instruction mode in viewport: step-through controls, highlight new pieces, mute previous, overlay text", "done": false},
+        {"text": "Wire instruction generator output to instruction mode UI", "done": false},
+        {"text": "Split-panel layout with resizable panels (left library, center viewport, right chat)", "done": false},
+        {"text": "Project management: save/load designs, name projects", "done": false}
+      ],
+      "done_when": "Full IDE: browse pieces left, 3D design center, AI chat right. Switch to instruction mode and step through assembly. This is the MVP."
+    }
+  ]
+}

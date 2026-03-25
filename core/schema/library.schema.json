@@ -122,6 +122,11 @@
           "default": false,
           "description": "If true, the length dimension is a default that can be overridden per placement (for cut-to-size materials like wood)"
         },
+        "variable_width": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, the width dimension is a default that can be overridden per placement (for cut-to-size materials like plywood)"
+        },
         "ldraw_id": {
           "type": "string",
           "description": "LDraw part file name, e.g. 3001.dat"

@@ -239,6 +239,28 @@ The LLM receives as context:
 
 No fine-tuning required. The scaffolding constrains the output space enough that a general model with good instructions can produce valid designs. As models improve, designs improve — the scaffolding captures permanent value.
 
+## Build Order and Assembly Feasibility
+
+### Declaration order = build order
+
+Pieces in the design JSON are declared in the order they are placed. The design should be valid (or nearly valid) after each step. This ensures the design is actually buildable and maps directly to assembly instructions.
+
+Each piece must connect to at least one previously declared piece (enforced by the `NO_CONNECTION_TO_PRIOR` validator check).
+
+### Intermediate instability is expected
+
+A single chair leg standing upright is unstable. A leg with one horizontal rail attached is also unstable — it needs the second leg. In IKEA-style assembly, these steps happen with the assembly lying on the floor (e.g., two legs connected by a rail, assembled horizontally, then a third leg attached before rotating to the intended orientation).
+
+The validator flags unstable intermediate states as **warnings**, not errors. Instability only becomes an error once the total weight of the design so far exceeds what a person can comfortably hold or flip by hand. A few Lego bricks or a single wooden leg are trivially liftable — instability doesn't matter. A half-built bookshelf that isn't self-supporting is a problem because the builder can't hold it upright while attaching the next piece.
+
+### Tool access clearance
+
+Every connection must be physically achievable by the builder:
+- **Wood**: There must be enough space around the connection point for a person with a drill to drive a screw. Connections in tight corners or behind other pieces that block drill access are invalid.
+- **Lego**: At minimum, fingers must fit to press the piece into place. Connections deep inside an enclosed structure with no hand access are invalid.
+
+This is not yet enforced by the validator but is a design constraint for the instruction generator and AI agent to respect.
+
 ## Design Decisions
 
 **Why JSON, not a visual editor?** The AI needs to read and write the design. Text is the natural interface for LLMs. The 3D viewport is for the human; the JSON is for the AI. Same as code — humans read the rendered output, the compiler reads the source.

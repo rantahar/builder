@@ -1,2 +1,4 @@
 jsonschema>=4.20
+numpy>=1.26
 pytest>=8.0
+trimesh>=4.0

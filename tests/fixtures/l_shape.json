@@ -31,7 +31,7 @@
     {
       "id": "arm_b",
       "type": "brick_2x4",
-      "position": [160, 8, 140],
+      "position": [160, 8, 180],
       "rotation": [0, 90, 0],
       "color": "blue",
       "connections": [

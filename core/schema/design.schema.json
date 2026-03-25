@@ -93,6 +93,11 @@
           "exclusiveMinimum": 0,
           "description": "For variable_length pieces: actual cut length in library units"
         },
+        "width_override": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "For variable_width pieces: actual cut width in library units"
+        },
         "connections": {
           "type": "array",
           "items": { "$ref": "#/$defs/connection" },

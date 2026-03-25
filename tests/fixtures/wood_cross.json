@@ -19,7 +19,7 @@
     {
       "id": "vertical",
       "type": "lumber_2x4",
-      "position": [277.5, 95, -277.5],
+      "position": [-277.5, 95, 277.5],
       "rotation": [0, 90, 0],
       "length_override": 600,
       "connections": [
