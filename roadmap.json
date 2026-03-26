@@ -64,12 +64,12 @@
       "number": 5,
       "title": "CLI skeleton and manual design loop",
       "goal": "A terminal interface where you can load, validate, and render designs interactively.",
-      "status": "planned",
+      "status": "complete",
       "tasks": [
-        {"text": "Write `cli/main.py` -- entry point, argument parsing (project directory, library selection)", "done": false},
-        {"text": "Write `cli/display.py` -- Rich-formatted output for validation reports, piece lists, design summaries", "done": false},
-        {"text": "Implement commands: `load`, `validate`, `render`, `export`, `quit`", "done": false},
-        {"text": "Add LDraw `.ldr` export in `core/exporter.py` -- convert design JSON to LDraw format", "done": false}
+        {"text": "Write `cli/main.py` -- entry point, argument parsing (project directory, library selection)", "done": true},
+        {"text": "Write `cli/display.py` -- Rich-formatted output for validation reports, piece lists, design summaries", "done": true},
+        {"text": "Implement commands: `load`, `validate`, `render`, `export`, `quit`", "done": true},
+        {"text": "Add LDraw `.ldr` export in `core/exporter.py` -- convert design JSON to LDraw format", "done": true}
       ],
       "done_when": "Run `python -m cli`, load a hand-written design, see colored validation results, view rendered images. Manual edit-reload-validate-render loop works."
     },
