@@ -177,7 +177,12 @@ def _build_scene(design: dict, library: "Library") -> pyrender.Scene:
 
     for piece_data in design.get("pieces", []):
         piece_def = library.get_piece(piece_data["type"])
-        mesh = piece_def.get_geometry(library)
+        # Build mesh from base dims with overrides (pre-rotation).
+        # The rotation matrix in _piece_transform handles orientation.
+        w = piece_data.get("width_override", piece_def.dimensions["width"]) if piece_def.variable_width else piece_def.dimensions["width"]
+        h = piece_def.dimensions["height"]
+        l = piece_data.get("length_override", piece_def.dimensions["length"]) if piece_def.variable_length else piece_def.dimensions["length"]
+        mesh = trimesh.creation.box(extents=[w, h, l])
 
         color_name = piece_data.get("color", "")
         r, g, b = _COLOR_MAP.get(color_name, _DEFAULT_COLOR)
