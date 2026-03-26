@@ -199,14 +199,14 @@ def test_compute_scene_bounds_empty():
 # ---------------------------------------------------------------------------
 
 
-def test_camera_poses_has_six_angles(lego):
-    """_compute_camera_poses returns exactly 6 poses, one per ANGLE_NAMES entry."""
+def test_camera_poses_has_all_angles(lego):
+    """_compute_camera_poses returns exactly 9 poses, one per ANGLE_NAMES entry."""
     design = _load_fixture("single_brick_on_baseplate.json")
     bounds = _compute_scene_bounds(design, lego)
     poses = _compute_camera_poses(bounds)
 
     assert set(poses.keys()) == set(ANGLE_NAMES)
-    assert len(poses) == 6
+    assert len(poses) == 9
 
     for name in ANGLE_NAMES:
         pose = poses[name]
@@ -277,7 +277,7 @@ def test_render_produces_png_files(lego, tmp_path):
     result = render(design, lego, tmp_path)
 
     png_files = list(tmp_path.glob("*.png"))
-    assert len(png_files) == 6
+    assert len(png_files) == 9
 
     for path in png_files:
         assert path.stat().st_size > 0
@@ -306,7 +306,7 @@ def test_render_creates_output_dir(lego, tmp_path):
     render(design, lego, output_dir)
 
     assert output_dir.exists()
-    assert len(list(output_dir.glob("*.png"))) == 6
+    assert len(list(output_dir.glob("*.png"))) == 9
 
 
 def test_render_custom_resolution(lego, tmp_path):

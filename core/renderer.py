@@ -19,7 +19,12 @@ from core.validator import effective_dims
 if TYPE_CHECKING:
     from core.library import Library
 
-ANGLE_NAMES = ["front", "back", "left", "right", "top", "isometric"]
+ANGLE_NAMES = [
+    "iso_front_left", "iso_front_right", "iso_back_left", "iso_back_right",
+    "iso_under_front_left", "iso_under_front_right",
+    "iso_under_back_left", "iso_under_back_right",
+    "top",
+]
 DEFAULT_RESOLUTION = (800, 600)
 
 _COLOR_MAP: dict[str, tuple[float, float, float]] = {
@@ -138,22 +143,32 @@ def _compute_camera_poses(bounds: np.ndarray) -> dict[str, np.ndarray]:
     """Return a dict of 4×4 camera-to-world pose matrices for each named angle."""
     center = (bounds[0] + bounds[1]) / 2
     diagonal = np.linalg.norm(bounds[1] - bounds[0])
-    dist = diagonal * 1.5
+    dist = diagonal * 2.5
 
     up_y = np.array([0.0, 1.0, 0.0])
+    d = dist / np.sqrt(3)
 
-    return {
-        "front": _look_at(center + np.array([0.0, 0.0, dist]), center, up_y),
-        "back": _look_at(center + np.array([0.0, 0.0, -dist]), center, up_y),
-        "left": _look_at(center + np.array([-dist, 0.0, 0.0]), center, up_y),
-        "right": _look_at(center + np.array([dist, 0.0, 0.0]), center, up_y),
-        "top": _look_at(center + np.array([0.0, dist, 0.0]), center, np.array([0.0, 0.0, -1.0])),
-        "isometric": _look_at(
-            center + np.array([1.0, 1.0, 1.0]) * (dist / np.sqrt(3)),
+    poses = {
+        "top": _look_at(
+            center + np.array([0.0, dist, 0.0]),
             center,
-            up_y,
+            np.array([0.0, 0.0, -1.0]),
         ),
     }
+
+    # 4 isometric corners from above, 4 from below
+    for label, sx, sz in [
+        ("front_left", -1, 1), ("front_right", 1, 1),
+        ("back_left", -1, -1), ("back_right", 1, -1),
+    ]:
+        poses[f"iso_{label}"] = _look_at(
+            center + np.array([sx, 1, sz]) * d, center, up_y,
+        )
+        poses[f"iso_under_{label}"] = _look_at(
+            center + np.array([sx, -1, sz]) * d, center, up_y,
+        )
+
+    return poses
 
 
 def _build_scene(design: dict, library: "Library") -> pyrender.Scene:

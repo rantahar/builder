@@ -94,8 +94,24 @@ class Piece:
             if dat_path.exists():
                 mesh = _parse_ldraw_dat(dat_path)
 
-        # Fall back to bounding box if no usable geometry from .dat
-        if mesh is None or len(mesh.vertices) < 4:
+        # Fall back to bounding box if no usable geometry from .dat.
+        # LDraw files often reference sub-parts we don't have, producing
+        # degenerate meshes (zero extent on an axis) or meshes whose
+        # extents don't match the library dimensions.
+        expected = [self.dimensions["width"], self.dimensions["height"],
+                    self.dimensions["length"]]
+        usable = (mesh is not None
+                  and len(mesh.faces) >= 12  # closed solid needs ≥12 tris
+                  and min(mesh.extents) > 1e-6
+                  and all(abs(a - b) / b < 0.5
+                          for a, b in zip(sorted(mesh.extents),
+                                          sorted(expected))))
+        if usable:
+            # Re-center the mesh at origin (LDraw origin is often at the
+            # top of the brick, not the center)
+            center = (mesh.bounds[0] + mesh.bounds[1]) / 2
+            mesh.vertices -= center
+        else:
             mesh = _bounding_box_mesh(self.dimensions)
 
         _geometry_cache[self.id] = mesh
