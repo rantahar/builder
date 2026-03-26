@@ -48,14 +48,17 @@
       "number": 4,
       "title": "Offscreen renderer",
       "goal": "Produce multi-angle PNG images from a design JSON.",
-      "status": "planned",
+      "status": "complete",
       "tasks": [
-        {"text": "Write `core/renderer.py` -- takes design dict and library, produces PNG images", "done": false},
-        {"text": "Load piece geometry from library (Trimesh meshes), place at design position/rotation with color materials", "done": false},
-        {"text": "Render from 6 fixed camera angles: front, back, left, right, top, isometric", "done": false},
-        {"text": "Test with hand-crafted fixtures -- visually confirm rendered images in `tests/test_renderer.py`", "done": false}
+        {"text": "Write `core/renderer.py` -- takes design dict and library, produces PNG images", "done": true},
+        {"text": "Load piece geometry from library (Trimesh meshes), place at design position/rotation with color materials", "done": true},
+        {"text": "Render from 9 fixed camera angles: 4 isometric above, 4 isometric below, top", "done": true},
+        {"text": "Test with hand-crafted fixtures -- visually confirm rendered images in `tests/test_renderer.py`", "done": true},
+        {"text": "Add `pyrender`, `PyOpenGL`, and `Pillow` dependencies with OSMesa headless rendering", "done": true},
+        {"text": "Robust LDraw geometry fallback: validate mesh extents and face count, re-center parsed meshes", "done": true},
+        {"text": "Handle variable-length/width pieces (length_override, width_override) in rendered geometry", "done": true}
       ],
-      "done_when": "`renderer.render(design, library, output_dir)` writes 6 PNGs showing correct Lego structures from multiple angles."
+      "done_when": "`renderer.render(design, library, output_dir)` writes 9 PNGs showing correct Lego and wood structures from multiple angles."
     },
     {
       "number": 5,

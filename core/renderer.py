@@ -185,6 +185,8 @@ def _build_scene(design: dict, library: "Library") -> pyrender.Scene:
         mesh = trimesh.creation.box(extents=[w, h, l])
 
         color_name = piece_data.get("color", "")
+        if not color_name and piece_def.colors:
+            color_name = piece_def.colors[0]
         r, g, b = _COLOR_MAP.get(color_name, _DEFAULT_COLOR)
 
         material = pyrender.MetallicRoughnessMaterial(
@@ -193,7 +195,7 @@ def _build_scene(design: dict, library: "Library") -> pyrender.Scene:
             roughnessFactor=0.7,
         )
 
-        pr_mesh = pyrender.Mesh.from_trimesh(mesh, material=material)
+        pr_mesh = pyrender.Mesh.from_trimesh(mesh, material=material, smooth=False)
         transform = _piece_transform(piece_data, library)
         scene.add(pr_mesh, pose=transform)
 

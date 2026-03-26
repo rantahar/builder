@@ -34,7 +34,8 @@
         "-y": { "attachments": ["screw_entry", "screw_receiver"] },
         "+z": { "attachments": ["screw_entry", "screw_receiver"] },
         "-z": { "attachments": ["screw_entry", "screw_receiver"] }
-      }
+      },
+      "colors": ["brown"]
     },
     {
       "id": "lumber_2x4",
@@ -53,7 +54,8 @@
         "-y": { "attachments": ["screw_entry", "screw_receiver"] },
         "+z": { "attachments": ["screw_entry", "screw_receiver"] },
         "-z": { "attachments": ["screw_entry", "screw_receiver"] }
-      }
+      },
+      "colors": ["brown"]
     },
     {
       "id": "lumber_4x4",
@@ -72,7 +74,8 @@
         "-y": { "attachments": ["screw_entry", "screw_receiver"] },
         "+z": { "attachments": ["screw_entry", "screw_receiver"] },
         "-z": { "attachments": ["screw_entry", "screw_receiver"] }
-      }
+      },
+      "colors": ["brown"]
     },
     {
       "id": "plank_18x95",
@@ -87,7 +90,8 @@
       "faces": {
         "+y": { "attachments": ["screw_entry"] },
         "-y": { "attachments": ["screw_entry"] }
-      }
+      },
+      "colors": ["brown"]
     },
     {
       "id": "plank_18x145",
@@ -102,7 +106,8 @@
       "faces": {
         "+y": { "attachments": ["screw_entry"] },
         "-y": { "attachments": ["screw_entry"] }
-      }
+      },
+      "colors": ["brown"]
     },
     {
       "id": "plywood_18mm",
@@ -118,7 +123,8 @@
       "faces": {
         "+y": { "attachments": ["screw_entry", "screw_receiver"] },
         "-y": { "attachments": ["screw_entry", "screw_receiver"] }
-      }
+      },
+      "colors": ["brown"]
     }
   ]
 }
